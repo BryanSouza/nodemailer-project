@@ -2,7 +2,6 @@ import { readFileSync } from "fs";
 import * as nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import { compile } from "handlebars";
-import { timeStamp } from "console";
 
 const HOST = process.env.EMAIL_HOST as string;
 const PORT = parseInt(process.env.EMAIL_PORT as string);
