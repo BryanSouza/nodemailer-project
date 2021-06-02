@@ -1,0 +1,12 @@
+@baseUrl = http://localhost:8080
+
+# @name sendMessage
+
+POST {{baseUrl}}/welcome
+Content-Type: application/json
+
+{
+    "to": "email",
+    "subject": "Welcome UserX!",
+    "text": "Good luck!"
+}
