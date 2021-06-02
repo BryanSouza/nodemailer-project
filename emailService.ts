@@ -2,6 +2,7 @@ import { readFileSync } from "fs";
 import * as nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import { compile } from "handlebars";
+import { timeStamp } from "console";
 
 const HOST = process.env.EMAIL_HOST as string;
 const PORT = parseInt(process.env.EMAIL_PORT as string);
@@ -9,10 +10,8 @@ const USER = process.env.EMAIL_FROM as string;
 const PASS = process.env.EMAIL_PASSWORD as string;
 
 class EmailService {
-    private transporter: Mail;
-
-    constructor() {
-        this.transporter = nodemailer.createTransport({
+    private getTransporter(): Mail {
+        return nodemailer.createTransport({
             host: HOST,
             port: PORT,
             auth: {
@@ -22,7 +21,8 @@ class EmailService {
             tls: {
                 ciphers: "SSLv3"
             },
-            secureConnection: false
+            secureConnection: false,
+            pool: false
         } as nodemailer.TransportOptions);
     }
 
@@ -47,7 +47,9 @@ class EmailService {
             attachments: attachments
         }
 
-        this.transporter.sendMail(options).then((response) => {
+        const transporter = this.getTransporter();
+
+        transporter.sendMail(options).then(() => {
             console.log("sent!");
         }).catch((error) => {
             console.log("error: ", error);
